@@ -51,7 +51,45 @@ def solve_part_one(data):
 
 
 def solve_part_two(data):
-    pass
+    res = 0
+    ranges = data[0].split(",")
+    for r in ranges:
+        start, end = map(int, r.split("-"))
+        current = start
+        while current <= end:
+            current_len = len(str(current))
+            first_digit_str = str(current)[0]
+
+            for i in range(1, (current_len // 2 + 1)):
+                if current_len % i != 0:
+                    continue
+                repeated_digit_str = str(current)[:i]
+                goal = int(repeated_digit_str * (current_len // i))
+                while repeated_digit_str[0] == first_digit_str and goal <= end:
+                    if i == 1 or not has_repeated_pattern(repeated_digit_str):
+                        if goal >= start:
+                            res += goal
+
+                    repeated_digit_str = str(int(repeated_digit_str) + 1)
+                    goal = int(repeated_digit_str * (current_len // i))
+
+            if first_digit_str == "9":
+                current = 10**current_len
+            else:
+                next_digit = int(first_digit_str) + 1
+                current = next_digit * (10 ** (current_len - 1))
+
+    return res
+
+
+def has_repeated_pattern(s):
+    length = len(s)
+    for i in range(1, length // 2 + 1):
+        if length % i == 0:
+            pattern = s[:i]
+            if pattern * (length // i) == s:
+                return True
+    return False
 
 
 if __name__ == "__main__":
