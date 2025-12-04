@@ -11,21 +11,34 @@ def read_input(filename):
 def solve_part_one(data):
     res = 0
     for row in data:
-        first_digit_heap = [
-            (digit, -1 * index)
-            for index, digit in enumerate([int(d) for d in list(row[:-1])])
-        ]
-        heapq.heapify_max(first_digit_heap)
-        largest_earliest = first_digit_heap[0]
-        second_digit_heap = [int(d) for d in list(row[abs(largest_earliest[1]) + 1 :])]
-        heapq.heapify_max(second_digit_heap)
-        res += largest_earliest[0] * 10 + second_digit_heap[0]
-
+        res += largest_joltage(2, row)
     return res
 
 
 def solve_part_two(data):
-    pass
+    res = 0
+    for row in data:
+        res += largest_joltage(12, row)
+    return res
+
+
+def largest_joltage(size, batteries):
+    res = 0
+    start_index = 0
+    for s in range(size - 1, -1, -1):
+        end_index = len(batteries) - s
+        digit_heap = [
+            (digit, -1 * (start_index + index))
+            for index, digit in enumerate(
+                [int(d) for d in list(batteries[start_index:end_index])]
+            )
+        ]
+        heapq.heapify_max(digit_heap)
+        largest_earliest = digit_heap[0]
+        start_index = abs(largest_earliest[1]) + 1
+        res += largest_earliest[0] * 10**s
+
+    return res
 
 
 if __name__ == "__main__":
