@@ -1,4 +1,5 @@
 from pathlib import Path
+import copy
 
 
 def read_input(filename):
@@ -8,12 +9,35 @@ def read_input(filename):
 
 
 def solve_part_one(data):
+    paper = copy.deepcopy(data)
+    return len(removable_paper(paper))
+
+
+def solve_part_two(data):
     res = 0
+    paper = copy.deepcopy(data)
+    while True:
+        removable_pos = removable_paper(paper)
+        if len(removable_pos) == 0:
+            break
+        res += len(removable_pos)
+        for i, j in removable_pos:
+            paper[i][j] = "."
+        for i in range(len(paper)):
+            for j in range(len(paper[0])):
+                if paper[i][j] != ".":
+                    paper[i][j] = "@"
+
+    return res
+
+
+def removable_paper(data):
+    res = []
     m = len(data)
     n = len(data[0])
     for i in range(m):
         for j in range(n):
-            if data[i][j] != "@":
+            if data[i][j] == ".":
                 continue
             top, middle, bottom = 0, 1, 0
             if i > 0:
@@ -41,12 +65,8 @@ def solve_part_one(data):
                     bottom += 1 if data[i + 1][j + 1] == "@" else 0
             data[i][j] = (middle, bottom)
             if top + middle + bottom <= 4:
-                res += 1
+                res.append((i, j))
     return res
-
-
-def solve_part_two(data):
-    pass
 
 
 if __name__ == "__main__":
