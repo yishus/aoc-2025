@@ -1,4 +1,5 @@
 from pathlib import Path
+from collections import defaultdict
 
 
 def read_input(filename):
@@ -29,24 +30,14 @@ def solve_part_two(data):
     starting_pos = data[0].find("S")
     targets = {starting_pos: 1}
     for row in data[1:]:
-        next_targets = dict()
+        next_targets = defaultdict(int)
         for t, count in targets.items():
             if row[t] == ".":
-                if t in next_targets:
-                    next_targets[t] += count
-                else:
-                    next_targets[t] = count
+                next_targets[t] += count
             else:
                 res += count
-                if t - 1 in next_targets:
-                    next_targets[t - 1] += count
-                else:
-                    next_targets[t - 1] = count
-
-                if t + 1 in next_targets:
-                    next_targets[t + 1] += count
-                else:
-                    next_targets[t + 1] = count
+                next_targets[t - 1] += count
+                next_targets[t + 1] += count
         targets = next_targets
 
     return res
