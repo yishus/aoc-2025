@@ -37,26 +37,6 @@ def solve_part_two(data):
         if polygon.contains(rect_from_coords):
             return area
 
-    #         print(p1, p2)
-    #
-    #         lines = [
-    #             shapely.LineString([p1, (p1[0], p2[1])]),
-    #             shapely.LineString([(p1[0], p2[1]), p2]),
-    #             shapely.LineString([p2, (p2[0], p1[1])]),
-    #             shapely.LineString([(p2[0], p1[1]), p1]),
-    #         ]
-    #
-    #         for line in lines:
-    #             print(p1, p2, line, polygon.intersection(line))
-    #
-    #         # if not any(polygon.intersects(line) for line in lines):
-    #         #     area = area_of_rect_from_coords(p1, p2)
-    #         #     if area > max_area:
-    #         #         max_area = area
-    #
-    # return max_area
-    #
-
 
 def area_of_rect_from_coords(p1, p2):
     x1, y1 = p1
